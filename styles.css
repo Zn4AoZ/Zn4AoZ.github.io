@@ -597,3 +597,29 @@ body {
   .card-content { bottom: 18px; left: 18px; right: 18px; }
   .card-content h3 { font-size: 1.1rem; }
 }
+
+/* PERFECTLY CENTERED FOOTER */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 60px;
+}
+
+footer .container {
+  text-align: center;
+}
+
+footer p, 
+footer a {
+  margin: 0 10px;
+  color: #b5b5b5;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+footer a:hover {
+  color: #ff4757;
+}
