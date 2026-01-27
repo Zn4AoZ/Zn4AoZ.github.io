@@ -412,3 +412,19 @@ body {
   display: block;
   margin-bottom: 8px;
 }
+/* CONTACT SECTION */
+.contact h2 {
+  margin-bottom: 20px; /* space after heading */
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column; /* stack phone + email */
+  gap: 8px; /* small gap between phone and email */
+  align-items: center; /* center horizontally */
+}
+
+.contact-details p {
+  margin: 0; /* remove default paragraph spacing */
+  font-size: 1.2rem;
+}
