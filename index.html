@@ -211,30 +211,41 @@
   <!-- JAVASCRIPT FOR CAROUSEL & SCROLL ANIMATIONS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Scroll animations (FIXED syntax)
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('active');  // ← FIXED QUOTE
+      if (entry.isIntersecting) entry.target.classList.add('active');
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // CAROUSEL - MANUAL NAVIGATION ONLY
+  // RESPONSIVE CAROUSEL WITH MOBILE DETECTION
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
   const prevBtn = document.querySelector('.carousel-prev');
   const nextBtn = document.querySelector('.carousel-next');
   
-  const totalSlides = 9;
-  const maxPosition = 7;
-  const cardWidth = 420;
   let currentIndex = 0;
   let isTransitioning = false;
 
+  // DYNAMIC CARD WIDTH (FIXES MOBILE)
+  function getCardWidth() {
+    if (window.innerWidth <= 600) return 280;  // Mobile: 1 card
+    if (window.innerWidth <= 900) return 340;  // Tablet: 1.5 cards
+    return 420;  // Desktop: 2 cards
+  }
+
+  const maxPosition = 7; // 8 positions for 9 cards
+
   function updateCarousel() {
+    if (!track) return;
+    
     isTransitioning = true;
+    const cardWidth = getCardWidth();
     const offset = -currentIndex * cardWidth;
     track.style.transform = `translateX(${offset}px)`;
     
+    // Update dots
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === currentIndex);
     });
@@ -248,24 +259,26 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCarousel();
   }
 
-  nextBtn.addEventListener('click', () => {
-    navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1);
+  // Navigation events
+  if (nextBtn) nextBtn.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
+  if (prevBtn) prevBtn.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
+  dots.forEach((dot, index) => dot.addEventListener('click', () => navigateTo(index)));
+
+  // MOBILE RESIZE HANDLING
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateCarousel, 250);
   });
 
-  prevBtn.addEventListener('click', () => {
-    navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1);
-  });
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => navigateTo(index));
-  });
-
+  // Initialize
   updateCarousel();
 });
 </script>
 
 </body>
 </html>
+
 
 
 
