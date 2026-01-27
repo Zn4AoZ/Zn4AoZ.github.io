@@ -211,7 +211,7 @@
   <!-- JAVASCRIPT FOR CAROUSEL & SCROLL ANIMATIONS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Scroll animations (FIXED syntax)
+  // Scroll animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active');
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // RESPONSIVE CAROUSEL WITH MOBILE DETECTION
+  // ULTRA-PRECISION MOBILE CAROUSEL
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
   const prevBtn = document.querySelector('.carousel-prev');
@@ -227,25 +227,29 @@ document.addEventListener('DOMContentLoaded', function() {
   
   let currentIndex = 0;
   let isTransitioning = false;
+  let cardWidth = 420;
 
-  // DYNAMIC CARD WIDTH (FIXES MOBILE)
-  function getCardWidth() {
-    if (window.innerWidth <= 600) return 260;  // Mobile: 1 card
-    if (window.innerWidth <= 900) return 340;  // Tablet: 1.5 cards
-    return 420;  // Desktop: 2 cards
+  // DETECT EXACT MOBILE RESOLUTION
+  function calculateCardWidth() {
+    const screenWidth = window.innerWidth;
+    
+    if (screenWidth <= 480) return Math.floor(screenWidth * 0.90);     // 90% of tiny phones
+    if (screenWidth <= 600) return Math.floor(screenWidth * 0.88);     // 88% of small phones  
+    if (screenWidth <= 768) return Math.floor(screenWidth * 0.82);     // 82% of tablets
+    if (screenWidth <= 1024) return Math.floor(screenWidth * 0.78);    // 78% of large tablets
+    return 420;  // Desktop
   }
 
-  const maxPosition = 7; // 8 positions for 9 cards
+  const maxPosition = 7;
 
   function updateCarousel() {
     if (!track) return;
     
     isTransitioning = true;
-    const cardWidth = getCardWidth();
+    cardWidth = calculateCardWidth();  // RECALCULATE EVERY TIME
     const offset = -currentIndex * cardWidth;
     track.style.transform = `translateX(${offset}px)`;
     
-    // Update dots
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === currentIndex);
     });
@@ -259,25 +263,33 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCarousel();
   }
 
-  // Navigation events
-  if (nextBtn) nextBtn.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
-  if (prevBtn) prevBtn.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
+  // Navigation
+  nextBtn?.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
+  prevBtn?.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => navigateTo(index)));
 
-  // MOBILE RESIZE HANDLING
+  // INSTANT RESIZE DETECTION (even orientation change)
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(updateCarousel, 250);
+    resizeTimeout = setTimeout(() => {
+      currentIndex = Math.floor(currentIndex * (cardWidth / calculateCardWidth())); // Maintain position
+      updateCarousel();
+    }, 100);
   });
 
-  // Initialize
+  // Orientation change detection
+  window.addEventListener('orientationchange', () => {
+    setTimeout(updateCarousel, 300);
+  });
+
   updateCarousel();
 });
 </script>
 
 </body>
 </html>
+
 
 
 
