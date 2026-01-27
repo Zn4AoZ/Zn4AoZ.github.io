@@ -211,7 +211,7 @@
   <!-- JAVASCRIPT FOR CAROUSEL & SCROLL ANIMATIONS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Scroll animations ONLY
+  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active');
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // FIXED CAROUSEL - PRECISE WIDTH PER BREAKPOINT
+  // SIMPLE CAROUSEL - NO WIDTH CALCULATIONS
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
   const prevBtn = document.querySelector('.carousel-prev');
@@ -228,47 +228,47 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentIndex = 0;
   let isTransitioning = false;
 
-  function getCardWidth() {
-    const width = window.innerWidth;
-    if (width <= 480) return 300;      // Mobile small
-    if (width <= 600) return 320;      // Mobile large  
-    if (width <= 900) return 360;      // Tablet
-    return 420;                        // Desktop
-  }
-
-  const maxPosition = 7;
-
   function updateCarousel() {
     isTransitioning = true;
-    const offset = -currentIndex * getCardWidth();
-    track.style.transform = `translateX(${offset}px)`;
+    const translateX = -currentIndex * 420;  // FIXED 420px
+    track.style.transform = `translateX(${translateX}px)`;
     
-    dots.forEach((dot, index) => {
-      dot.classList.toggle('active', index === currentIndex);
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
     });
     
     setTimeout(() => { isTransitioning = false; }, 600);
   }
 
-  function navigateTo(index) {
+  function goNext() {
     if (isTransitioning) return;
-    currentIndex = Math.max(0, Math.min(index, maxPosition));
+    currentIndex = currentIndex < 7 ? currentIndex + 1 : 0;
     updateCarousel();
   }
 
-  // Event listeners
-  nextBtn?.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
-  prevBtn?.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
-  dots.forEach((dot, index) => dot.addEventListener('click', () => navigateTo(index)));
+  function goPrev() {
+    if (isTransitioning) return;
+    currentIndex = currentIndex > 0 ? currentIndex - 1 : 7;
+    updateCarousel();
+  }
 
-  window.addEventListener('resize', updateCarousel);
+  nextBtn.addEventListener('click', goNext);
+  prevBtn.addEventListener('click', goPrev);
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      if (isTransitioning) return;
+      currentIndex = index;
+      updateCarousel();
+    });
+  });
+
   updateCarousel();
 });
 </script>
-
-
+  
 </body>
 </html>
+
 
 
 
