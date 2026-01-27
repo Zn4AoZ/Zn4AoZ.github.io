@@ -211,6 +211,7 @@
   <!-- JAVASCRIPT FOR CAROUSEL & SCROLL ANIMATIONS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Scroll animations ONLY
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active');
@@ -218,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // FIXED CAROUSEL - PRECISE WIDTH PER BREAKPOINT
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
   const prevBtn = document.querySelector('.carousel-prev');
@@ -226,36 +228,25 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentIndex = 0;
   let isTransitioning = false;
 
-  function getPerfectCardWidth() {
-    const container = document.querySelector('.carousel-container');
-    if (!container) return 380;
-    
-    const containerWidth = container.offsetWidth;
-    const padding = 80; // Account for arrow buttons + margins
-    
-    if (containerWidth < 500) return containerWidth - 40;  // Full width minus padding
-    if (containerWidth < 800) return Math.floor(containerWidth * 0.85);
-    return 380; // Desktop
+  function getCardWidth() {
+    const width = window.innerWidth;
+    if (width <= 480) return 300;      // Mobile small
+    if (width <= 600) return 320;      // Mobile large  
+    if (width <= 900) return 360;      // Tablet
+    return 420;                        // Desktop
   }
 
   const maxPosition = 7;
 
   function updateCarousel() {
     isTransitioning = true;
-    const cardWidth = getPerfectCardWidth();
-    
-    // Set ALL cards to exact width
-    document.querySelectorAll('.event-card').forEach(card => {
-      card.style.width = cardWidth + 'px';
-    });
-    
-    const offset = -currentIndex * cardWidth;
+    const offset = -currentIndex * getCardWidth();
     track.style.transform = `translateX(${offset}px)`;
     
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === currentIndex);
     });
-
+    
     setTimeout(() => { isTransitioning = false; }, 600);
   }
 
@@ -265,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCarousel();
   }
 
+  // Event listeners
   nextBtn?.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
   prevBtn?.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => navigateTo(index)));
@@ -274,8 +266,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
 </body>
 </html>
+
 
 
 
