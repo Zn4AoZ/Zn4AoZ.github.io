@@ -623,7 +623,3 @@ footer a {
 footer a:hover {
   color: #ff4757;
 }
-/* MOBILE CAROUSEL FIX - JS CONTROLLED WIDTHS */
-@media (max-width: 900px) {
-  .event-card { flex: none !important; width: auto !important; }
-}
