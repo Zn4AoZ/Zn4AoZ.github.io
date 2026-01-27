@@ -1,4 +1,3 @@
-<script>
 document.addEventListener('DOMContentLoaded', function() {
   // Scroll animations ONLY
   const observer = new IntersectionObserver((entries) => {
@@ -59,5 +58,3 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize first position
   updateCarousel();
 });
-
-</script>
