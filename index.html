@@ -211,7 +211,6 @@
   <!-- JAVASCRIPT FOR CAROUSEL & SCROLL ANIMATIONS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Scroll animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active');
@@ -219,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ULTRA-PRECISION MOBILE CAROUSEL
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
   const prevBtn = document.querySelector('.carousel-prev');
@@ -227,26 +225,30 @@ document.addEventListener('DOMContentLoaded', function() {
   
   let currentIndex = 0;
   let isTransitioning = false;
-  let cardWidth = 420;
 
-  // DETECT EXACT MOBILE RESOLUTION
-  function calculateCardWidth() {
-    const screenWidth = window.innerWidth;
+  function getPerfectCardWidth() {
+    const container = document.querySelector('.carousel-container');
+    if (!container) return 380;
     
-    if (screenWidth <= 480) return Math.floor(screenWidth * 0.90);     // 90% of tiny phones
-    if (screenWidth <= 600) return Math.floor(screenWidth * 0.88);     // 88% of small phones  
-    if (screenWidth <= 768) return Math.floor(screenWidth * 0.82);     // 82% of tablets
-    if (screenWidth <= 1024) return Math.floor(screenWidth * 0.78);    // 78% of large tablets
-    return 420;  // Desktop
+    const containerWidth = container.offsetWidth;
+    const padding = 80; // Account for arrow buttons + margins
+    
+    if (containerWidth < 500) return containerWidth - 40;  // Full width minus padding
+    if (containerWidth < 800) return Math.floor(containerWidth * 0.85);
+    return 380; // Desktop
   }
 
   const maxPosition = 7;
 
   function updateCarousel() {
-    if (!track) return;
-    
     isTransitioning = true;
-    cardWidth = calculateCardWidth();  // RECALCULATE EVERY TIME
+    const cardWidth = getPerfectCardWidth();
+    
+    // Set ALL cards to exact width
+    document.querySelectorAll('.event-card').forEach(card => {
+      card.style.width = cardWidth + 'px';
+    });
+    
     const offset = -currentIndex * cardWidth;
     track.style.transform = `translateX(${offset}px)`;
     
@@ -263,32 +265,18 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCarousel();
   }
 
-  // Navigation
   nextBtn?.addEventListener('click', () => navigateTo(currentIndex + 1 > maxPosition ? 0 : currentIndex + 1));
   prevBtn?.addEventListener('click', () => navigateTo(currentIndex - 1 < 0 ? maxPosition : currentIndex - 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => navigateTo(index)));
 
-  // INSTANT RESIZE DETECTION (even orientation change)
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      currentIndex = Math.floor(currentIndex * (cardWidth / calculateCardWidth())); // Maintain position
-      updateCarousel();
-    }, 100);
-  });
-
-  // Orientation change detection
-  window.addEventListener('orientationchange', () => {
-    setTimeout(updateCarousel, 300);
-  });
-
+  window.addEventListener('resize', updateCarousel);
   updateCarousel();
 });
 </script>
 
 </body>
 </html>
+
 
 
 
