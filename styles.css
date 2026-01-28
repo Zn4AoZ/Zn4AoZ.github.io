@@ -605,8 +605,7 @@ body {
   .card-content h3 { font-size: 1.1rem; }
 }
 
-/* PERFECTLY CENTERED FOOTER */
-footer {
+/* PERFECTLY CENTERED FOOTER */footer {
   width: 100%;
   padding: 40px 20px;
   margin-top: 60px;
@@ -615,13 +614,14 @@ footer {
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
-/* Footer inner container */
+/* Inner wrapper */
 footer .container {
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
 
   display: flex;
   justify-content: center;
@@ -642,7 +642,8 @@ footer a {
   text-decoration: none;
 }
 
-/* Hover effect */
 footer a:hover {
   color: #ff4757;
 }
+
+
