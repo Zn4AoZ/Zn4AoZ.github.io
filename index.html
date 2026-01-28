@@ -40,25 +40,15 @@
 
 
 <!-- EVENTS -->
-/* EVENT CARDS - NO ROUNDED CORNERS */
-.event-card {
-  flex: 0 0 380px;
-  height: 420px;
-  position: relative;
-  border-radius: 0 !important;  /* NO ROUNDED CORNERS */
-  overflow: hidden;
-  border: 2px solid transparent;
-  transition: all 0.4s ease;
-}
-
-.carousel-container {
-  height: 100%;
-  overflow: hidden;
-  border-radius: 0 !important;  /* NO ROUNDED CONTAINER */
-  background: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(20px);
-  margin: 0 100px;
-}
+<section id="events" class="section dark reveal">
+  <div class="container">
+    <h2 class="section-title">Events</h2>
+    
+    <div class="carousel-wrapper">
+      <button class="carousel-btn carousel-prev">‹</button>
+      
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
           <!-- Event 1 -->
           <div class="event-card vault-card">
             <img src="resources/card1.jpg" alt="The Vault Break" class="card-bg-image">
