@@ -616,7 +616,12 @@ footer {
 }
 
 footer .container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  flex-wrap: wrap;
 }
 
 footer p, 
@@ -630,5 +635,6 @@ footer a {
 footer a:hover {
   color: #ff4757;
 }
+
 
 
