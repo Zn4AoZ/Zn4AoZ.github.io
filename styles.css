@@ -605,7 +605,8 @@ body {
   .card-content h3 { font-size: 1.1rem; }
 }
 
-/* PERFECTLY CENTERED FOOTER */footer {
+/* PERFECTLY CENTERED FOOTER */
+  footer {
   width: 100%;
   padding: 40px 20px;
   margin-top: 60px;
@@ -620,16 +621,7 @@ body {
 
 /* Inner wrapper */
 footer .container {
-  width: 100%;
-  max-width: 1200px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  text-align: center;
+  padding: 0;
 }
 
 /* Text & links */
@@ -645,5 +637,6 @@ footer a {
 footer a:hover {
   color: #ff4757;
 }
+
 
 
