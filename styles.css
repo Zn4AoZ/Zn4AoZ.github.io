@@ -607,34 +607,42 @@ body {
 
 /* PERFECTLY CENTERED FOOTER */
 footer {
-  text-align: center;
+  width: 100%;
   padding: 40px 20px;
+  margin-top: 60px;
+
   background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 60px;
+
+  text-align: center;
 }
 
+/* Footer inner container */
 footer .container {
+  max-width: 1200px;
   margin: 0 auto;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   flex-wrap: wrap;
+  gap: 12px;
+
+  text-align: center;
 }
 
-footer p, 
+/* Text & links */
+footer p,
 footer a {
-  margin: 0 10px;
+  margin: 0;
   color: #b5b5b5;
   font-size: 0.95rem;
   line-height: 1.6;
+  text-decoration: none;
 }
 
+/* Hover effect */
 footer a:hover {
   color: #ff4757;
 }
-
-
-
